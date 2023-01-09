@@ -35,7 +35,7 @@ endif()
 message(STATUS "CMAKE_INSTALL_PREFIX set to: ${CMAKE_INSTALL_PREFIX}")
 
 # create the commandline variables:
-OPTION(BUILD_SHARED_LIBS "Set to OFF to build static libraries" ON )
+OPTION(BUILD_SHARED_LIBS "Set to OFF to build static libraries" OFF )
 message(STATUS "BUILD_SHARED_LIBS is set to value: ${BUILD_SHARED_LIBS}")
 SET(RPM_PACKAGE_VERSION "r0" CACHE STRING "rpm packet version") # used in e.g. commonapi.spec.in
 
@@ -102,7 +102,7 @@ IF(MSVC)
     add_definitions(-DCOMMONAPI_INTERNAL_COMPILATION -DCOMMONAPI_DLL_COMPILATION)
     add_compile_options(/EHsc /wd4996)
 ELSE ()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Wformat -Wformat-security -Wconversion -fexceptions -fstrict-aliasing -fstack-protector -fasynchronous-unwind-tables -fno-omit-frame-pointer -Werror -DCOMMONAPI_INTERNAL_COMPILATION -fvisibility=hidden")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Wformat -Wformat-security -Wconversion -fexceptions -fstrict-aliasing -fstack-protector -fasynchronous-unwind-tables -fno-omit-frame-pointer -DCOMMONAPI_INTERNAL_COMPILATION -fvisibility=hidden")
 ENDIF(MSVC)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCOMMONAPI_LOGLEVEL=COMMONAPI_LOGLEVEL_${MAX_LOG_LEVEL}")
@@ -126,7 +126,7 @@ link_directories(
 
 file(GLOB CAPI_SRCS "src/CommonAPI/*.cpp")
 list(SORT CAPI_SRCS)
-add_library(CommonAPI SHARED ${CAPI_SRCS})
+add_library(CommonAPI STATIC ${CAPI_SRCS})
 target_link_libraries(CommonAPI PRIVATE ${DL_LIBRARY} ${DLT_LIBRARIES})
 set_target_properties(CommonAPI PROPERTIES VERSION ${LIBCOMMONAPI_MAJOR_VERSION}.${LIBCOMMONAPI_MINOR_VERSION}.${LIBCOMMONAPI_PATCH_VERSION} SOVERSION ${LIBCOMMONAPI_MAJOR_VERSION}.${LIBCOMMONAPI_MINOR_VERSION}.${LIBCOMMONAPI_PATCH_VERSION} LINKER_LANGUAGE C)
 set_target_properties (CommonAPI PROPERTIES INTERFACE_LINK_LIBRARY "")
