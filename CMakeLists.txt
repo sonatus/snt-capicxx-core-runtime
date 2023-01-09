@@ -57,7 +57,7 @@ string(TOLOWER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE_FOR_SPEC_IN)
 # Offer the user the choice of overriding the installation directories
 set(INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")
 set(INSTALL_BIN_DIR bin CACHE PATH "Installation directory for binaries")
-set(INSTALL_INCLUDE_DIR include/CommonAPI-${COMMONAPI_API_HEADER_VERSION} CACHE PATH "Installation directory for header files")
+set(INSTALL_INCLUDE_DIR include CACHE PATH "Installation directory for header files")
 
 if(WIN32 AND NOT CYGWIN)
   set(DEF_INSTALL_CMAKE_DIR cmake)
@@ -102,16 +102,10 @@ IF(MSVC)
     add_definitions(-DCOMMONAPI_INTERNAL_COMPILATION -DCOMMONAPI_DLL_COMPILATION)
     add_compile_options(/EHsc /wd4996)
 ELSE ()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Wformat -Wformat-security -Wconversion -fexceptions -fPIC -fstrict-aliasing -fstack-protector -fasynchronous-unwind-tables -fno-omit-frame-pointer -DCOMMONAPI_INTERNAL_COMPILATION -fvisibility=hidden")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Wformat -Wformat-security -Wconversion -O2 -flto -fexceptions -fstrict-aliasing -fstack-protector -fasynchronous-unwind-tables -fno-omit-frame-pointer -DCOMMONAPI_INTERNAL_COMPILATION -fvisibility=hidden")
 ENDIF(MSVC)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCOMMONAPI_LOGLEVEL=COMMONAPI_LOGLEVEL_${MAX_LOG_LEVEL}")
-
-FIND_PACKAGE(PkgConfig)
-pkg_check_modules(DLT "automotive-dlt >= 2.11")
-IF(DLT_FOUND)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DUSE_DLT")
-ENDIF(DLT_FOUND)
 
 ##############################################################################
 
