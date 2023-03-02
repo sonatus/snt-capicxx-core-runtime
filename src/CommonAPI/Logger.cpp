@@ -176,23 +176,30 @@ private:
 #endif
 };
 
-std::unique_ptr<Logger::LoggerImpl> Logger::loggerImpl_ =
-        std::unique_ptr<Logger::LoggerImpl>(new Logger::LoggerImpl());
+std::once_flag Logger::init_once_flag_;
+std::unique_ptr<Logger::LoggerImpl> Logger::loggerImpl_;
+
+Logger::LoggerImpl *Logger::getLoggerImpl() {
+    std::call_once(init_once_flag_,
+                   []() { loggerImpl_.reset(new LoggerImpl()); });
+
+    return loggerImpl_.get();
+}
 
 Logger::Logger() = default;
 Logger::~Logger() = default;
 
 void Logger::init(bool _useConsole, const std::string &_fileName, bool _useDlt,
                   const std::string& _level) {
-    loggerImpl_->init(_useConsole, _fileName, _useDlt, _level);
+    getLoggerImpl()->init(_useConsole, _fileName, _useDlt, _level);
 }
 
 bool Logger::isLogged(Level _level) {
-    return loggerImpl_->isLogged(_level);
+    return getLoggerImpl()->isLogged(_level);
 }
 
 void Logger::doLog(Level _level, const std::string& _message) {
-    loggerImpl_->doLog(_level, _message);
+    getLoggerImpl()->doLog(_level, _message);
 }
 
 } //namespace CommonAPI

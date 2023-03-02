@@ -13,6 +13,7 @@
 #include <memory>
 #include <sstream>
 #include <cstdint>
+#include <mutex>
 
 #include <CommonAPI/Export.hpp>
 
@@ -84,6 +85,8 @@ public:
 
 private:
     class LoggerImpl;
+    static LoggerImpl *getLoggerImpl();
+    static std::once_flag init_once_flag_;
     static std::unique_ptr<LoggerImpl> loggerImpl_;
 
     COMMONAPI_EXPORT static bool isLogged(Level _level);
