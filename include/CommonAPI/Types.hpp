@@ -69,10 +69,10 @@ namespace CommonAPI {
 #else
 #define CCALL
 #define INITIALIZER(f) \
-    static void f(void) __attribute__((constructor)); \
+    static void f(void) __attribute__((constructor (101))); \
     static void f(void)
 #define DEINITIALIZER(f) \
-    static void f(void) __attribute__((destructor)); \
+    static void f(void) __attribute__((destructor (101))); \
     static void f(void)
 #endif
 
