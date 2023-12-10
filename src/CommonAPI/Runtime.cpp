@@ -77,7 +77,7 @@ Runtime::Runtime()
       defaultFolder_(COMMONAPI_DEFAULT_FOLDER),
       isConfigured_(false),
       isInitialized_(false),
-      defaultCallTimeout_(CommonAPI::DEFAULT_SEND_TIMEOUT_MS) {
+      defaultCallTimeout_(DEFAULT_SEND_TIMEOUT_MS) {
 }
 
 Runtime::~Runtime() {
