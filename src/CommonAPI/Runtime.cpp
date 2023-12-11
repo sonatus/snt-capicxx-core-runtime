@@ -14,6 +14,7 @@
 
 #include <algorithm>
 
+#include <CommonAPI/Config.hpp>
 #include <CommonAPI/Factory.hpp>
 #include <CommonAPI/IniFileReader.hpp>
 #include <CommonAPI/Logger.hpp>
@@ -75,7 +76,8 @@ Runtime::Runtime()
     : defaultBinding_(COMMONAPI_DEFAULT_BINDING),
       defaultFolder_(COMMONAPI_DEFAULT_FOLDER),
       isConfigured_(false),
-      isInitialized_(false) {
+      isInitialized_(false),
+      defaultCallTimeout_(DEFAULT_SEND_TIMEOUT_MS) {
 }
 
 Runtime::~Runtime() {
